@@ -1,9 +1,13 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 namespace VehicleServiceAPI.Model
 {
 	public class Vehicle
 	{
-        public int Id { get; set; }
+        [BsonId]
+        [BsonElement(elementName:"_id")]
+        public ObjectId Id { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
         public string RegistrationNumber { get; set; }
