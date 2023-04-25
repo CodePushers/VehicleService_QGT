@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Collections.Generic;
 using System;
 using System.Diagnostics;
@@ -60,16 +61,73 @@ public class VehicleController : ControllerBase
     }
 
     //Show vehicle info with image(s)
-    [HttpGet("{id}", Name = "VehicleInfo")]
-    public Vehicle GetVehicleInfo(string id)
+    [HttpGet("{regNumber}", Name = "VehicleInfo")]
+    public Vehicle GetVehicleInfo(string regNumber)
     {
         _logger.LogInformation("\nMetoden: GetVehicleInfo(string id) kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
 
-        return _vehicles.Find(vehicle => vehicle.Id == id).FirstOrDefault();
+        return _vehicles.Find(vehicle => vehicle.RegistrationNumber == regNumber).FirstOrDefault();
     }
     
-    // //Attach image to vehicle
-    // [HttpPost("uploadImage"), DisableRequestSizeLimit]
+    // Attach image to vehicle
+    [HttpPost("{regNumber}", Name = "PostImage"), DisableRequestSizeLimit]
+    public IActionResult UploadImage(string regNumber)
+    {
+        _logger.LogInformation($"Uploading image til: {regNumber}");
 
-    
+        List<Uri> images = new List<Uri>();
+        try
+        {
+            foreach (var formFile in Request.Form.Files)
+            {
+                // Validate file type and size
+
+                if (formFile.ContentType != "image/jpeg" && formFile.ContentType != "image/png")
+                {
+                    return BadRequest($"Invalid file type for file {formFile.FileName}. Only JPEG and PNG files are allowed.");
+                }
+                if (formFile.Length > 1048576) // 1MB
+                {
+                    return BadRequest($"File {formFile.FileName} is too large. Maximum file size is 1MB.");
+                }
+                if (formFile.Length > 0)
+                {
+                    var fileName = "image-" + Guid.NewGuid().ToString() + ".jpg";
+                    var fullPath = _imagePath + Path.DirectorySeparatorChar + fileName;
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        formFile.CopyTo(stream);
+                    }
+                    var imageURI = new Uri(fileName, UriKind.RelativeOrAbsolute);
+                    images.Add(imageURI);
+                }
+                else
+                {
+                    return BadRequest("Empty file submited.");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return StatusCode(500, $"Internal server error.");
+        }
+        //insert billedeurl- på bil id-
+        var filter = Builders<Vehicle>.Filter.Eq("RegistrationNumber", regNumber); // Find the document to update
+
+        var update = Builders<Vehicle>.Update.Push("ImageHistory", new Image
+
+        {
+            Location = _imagePath,
+            Description = "Rids på fælgen",
+            FileName = images[0].ToString(),
+            AddedBy = "Lars"
+        }); // Insert the new element into the array
+
+        var result = _vehicles.UpdateOne(filter, update);
+
+        Console.WriteLine($"{result.ModifiedCount} document(s) updated.");
+        return Ok(images);
+    }
+
 }
