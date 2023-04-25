@@ -8,8 +8,7 @@ namespace VehicleServiceAPI.Model
 {
 	public class ServiceHistory
 	{
-        [BsonElement]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonId]
         public string Id { get; set; }
         [BsonElement]
         public DateTime Date { get; set; } = DateTime.Now;

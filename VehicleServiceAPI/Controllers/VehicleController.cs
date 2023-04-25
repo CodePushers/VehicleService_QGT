@@ -55,6 +55,8 @@ public class VehicleController : ControllerBase
     {
         _logger.LogInformation("\nMetoden: AddVehicle(Vehicle car) kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
 
+        car.Id = ObjectId.GenerateNewId().ToString();
+
         await _vehicles.InsertOneAsync(car);
 
         return;

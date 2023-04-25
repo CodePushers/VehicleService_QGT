@@ -7,7 +7,6 @@ namespace VehicleServiceAPI.Model
 	public class Vehicle
 	{
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
