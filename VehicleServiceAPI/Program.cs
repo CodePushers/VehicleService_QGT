@@ -1,5 +1,3 @@
-using Microsoft.Extension.FileProvider;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

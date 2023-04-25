@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +45,7 @@ public class VehicleController : ControllerBase
     {
         _logger.LogInformation("\nMetoden: GetAll() kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
 
-        return _vehicles.Find(_ => true).ToList();
+        return _vehicles.Find(new BsonDocument()).ToList();
     }
 
     //Add new vehicle
@@ -58,11 +59,17 @@ public class VehicleController : ControllerBase
         return;
     }
 
+    //Show vehicle info with image(s)
+    [HttpGet("{id}", Name = "VehicleInfo")]
+    public Vehicle GetVehicleInfo(string id)
+    {
+        _logger.LogInformation("\nMetoden: GetVehicleInfo(string id) kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
+
+        return _vehicles.Find(vehicle => vehicle.Id == id).FirstOrDefault();
+    }
     
     // //Attach image to vehicle
     // [HttpPost("uploadImage"), DisableRequestSizeLimit]
 
-    // //Show vehicle info with image(s)
-    // [HttpGet("listVehicleInfo")]
     
 }
