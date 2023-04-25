@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
@@ -37,7 +38,7 @@ public class VehicleController : ControllerBase
         _logger.LogInformation($"[*] COLLECTION: {_config["CollectionName"]}");
     }
 
-        //List vehicles info
+    //List vehicles info
     [HttpGet("getInfo")]
     public List<Vehicle> GetAllVehicles()
     {
@@ -46,14 +47,22 @@ public class VehicleController : ControllerBase
         return _vehicles.Find(_ => true).ToList();
     }
 
-    /*
-     * 
     //Add new vehicle
     [HttpPost("addVehicle")]
-    //Attach image to vehicle
-    [HttpPost("uploadImage"), DisableRequestSizeLimit]
+    public async Task AddVehicle(Vehicle car)
+    {
+        _logger.LogInformation("\nMetoden: AddVehicle(Vehicle car) kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
 
-    //Show vehicle info with image(s)
-    [HttpGet("listVehicleInfo")]
-    */
+        await _vehicles.InsertOneAsync(car);
+
+        return;
+    }
+
+    
+    // //Attach image to vehicle
+    // [HttpPost("uploadImage"), DisableRequestSizeLimit]
+
+    // //Show vehicle info with image(s)
+    // [HttpGet("listVehicleInfo")]
+    
 }
