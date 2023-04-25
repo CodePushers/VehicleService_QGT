@@ -1,3 +1,5 @@
+using Microsoft.Extensions.FileProviders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,5 +23,20 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Den følgende stump kode skal tilføjes til Program.cs
+
+// Setup application to handle download of static content (images)
+// from a predetermined folder
+var imagePath = builder.Configuration["ImagePath"];
+var fileProvider = new PhysicalFileProvider(Path.GetFullPath(imagePath));
+var requestPath = new PathString("/images");
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = fileProvider,
+    RequestPath = requestPath
+});
+Console.WriteLine("File Provider Root: " + fileProvider.Root);
+Console.WriteLine("requestPath" + requestPath);
 
 app.Run();
