@@ -64,7 +64,7 @@ public class VehicleController : ControllerBase
     [HttpGet("{regNumber}", Name = "VehicleInfo")]
     public Vehicle GetVehicleInfo(string regNumber)
     {
-        _logger.LogInformation("\nMetoden: GetVehicleInfo(string id) kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
+        _logger.LogInformation("\nMetoden: GetVehicleInfo(string regNumber) kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
 
         return _vehicles.Find(vehicle => vehicle.RegistrationNumber == regNumber).FirstOrDefault();
     }

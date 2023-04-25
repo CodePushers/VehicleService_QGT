@@ -9,6 +9,9 @@ namespace VehicleServiceAPI.Model
 	public class ServiceHistory
 	{
         [BsonElement]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        [BsonElement]
         public DateTime Date { get; set; } = DateTime.Now;
         public string Description { get; set; }
         public string ServicedBy { get; set; }

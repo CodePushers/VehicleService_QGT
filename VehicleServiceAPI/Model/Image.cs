@@ -8,6 +8,9 @@ namespace VehicleServiceAPI.Model
 {
 	public class Image
 	{
+        [BsonElement]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string? FileName { get; set; }
         public string? Location { get; set; }
         [BsonElement]
