@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+
 namespace VehicleServiceAPI.Model
 {
 	public class Vehicle
@@ -15,7 +16,7 @@ namespace VehicleServiceAPI.Model
         public List<string> ServiceHistory { get; set; }
         public List<string> ImageHistory { get; set; }
 
-        public Vehicle(int id, string brand, string model, string registrationNumber, int mileage)
+        public Vehicle(ObjectId id, string brand, string model, string registrationNumber, int mileage)
         {
             Id = id;
             Brand = brand;

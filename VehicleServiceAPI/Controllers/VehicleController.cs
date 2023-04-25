@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Text;
+using VehicleServiceAPI.Model;
 
 namespace VehicleServiceAPI.Controllers;
 
@@ -11,9 +12,9 @@ namespace VehicleServiceAPI.Controllers;
 public class VehicleController : ControllerBase
 {
     private readonly ILogger<VehicleController> _logger;
+    private readonly IMongoCollection<Vehicle> _vehicles;
     private readonly IConfiguration _config;
     private readonly string _imagePath;
-    private readonly IMongoCollection<Vehicle> _vehicles;
 
 
     public VehicleController(ILogger<VehicleController> logger, IConfiguration config)
@@ -36,15 +37,21 @@ public class VehicleController : ControllerBase
         _logger.LogInformation($"[*] COLLECTION: {_config["CollectionName"]}");
     }
 
+        //List vehicles info
+    [HttpGet("getInfo")]
+    public List<Vehicle> GetAllVehicles()
+    {
+        _logger.LogInformation("\nMetoden: GetAll() kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
+
+        return _vehicles.Find(_ => true).ToList();
+    }
+
     /*
      * 
     //Add new vehicle
     [HttpPost("addVehicle")]
     //Attach image to vehicle
     [HttpPost("uploadImage"), DisableRequestSizeLimit]
-
-    //List vehicles info
-    [HttpGet("listImages")]
 
     //Show vehicle info with image(s)
     [HttpGet("listVehicleInfo")]
