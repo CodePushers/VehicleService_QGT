@@ -51,13 +51,22 @@ public class VehicleController : ControllerBase
 
     //Add new vehicle
     [HttpPost("addVehicle")]
-    public async Task AddVehicle(Vehicle car)
+    public async Task AddVehicle(VehicleDTO car)
     {
         _logger.LogInformation("\nMetoden: AddVehicle(Vehicle car) kaldt klokken {DT}", DateTime.UtcNow.ToLongTimeString());
 
-        car.Id = ObjectId.GenerateNewId().ToString();
+        Vehicle vehicle = new Vehicle
+        {
+            Id = ObjectId.GenerateNewId().ToString(),
+            Brand = car.Brand,
+            Model = car.Model,
+            RegistrationNumber = car.RegistrationNumber,
+            Mileage = car.Mileage,
+            ServiceHistory = car.ServiceHistory,
+            ImageHistory = car.ImageHistory
+        };
 
-        await _vehicles.InsertOneAsync(car);
+        await _vehicles.InsertOneAsync(vehicle);
 
         return;
     }
@@ -70,7 +79,7 @@ public class VehicleController : ControllerBase
 
         return _vehicles.Find(vehicle => vehicle.RegistrationNumber == regNumber).FirstOrDefault();
     }
-    
+
     // Attach image to vehicle
     [HttpPost("{regNumber}", Name = "PostImage"), DisableRequestSizeLimit]
     public IActionResult UploadImage(string regNumber)

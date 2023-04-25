@@ -28,15 +28,15 @@ app.MapControllers();
 
 // Setup application to handle download of static content (images)
 // from a predetermined folder
-var imagePath = builder.Configuration["ImagePath"];
-var fileProvider = new PhysicalFileProvider(Path.GetFullPath(imagePath));
-var requestPath = new PathString("/images");
-app.UseStaticFiles(new StaticFileOptions()
-{
-    FileProvider = fileProvider,
-    RequestPath = requestPath
-});
-Console.WriteLine("File Provider Root: " + fileProvider.Root);
-Console.WriteLine("requestPath" + requestPath);
+//var imagePath = builder.Configuration["ImagePath"];
+//var fileProvider = new PhysicalFileProvider(Path.GetFullPath(imagePath));
+//var requestPath = new PathString("/images");
+//app.UseStaticFiles(new StaticFileOptions()
+//{
+//    FileProvider = fileProvider,
+//    RequestPath = requestPath
+//});
+//Console.WriteLine("File Provider Root: " + fileProvider.Root);
+//Console.WriteLine("requestPath" + requestPath);
 
 app.Run();

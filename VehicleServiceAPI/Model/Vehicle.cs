@@ -15,6 +15,11 @@ namespace VehicleServiceAPI.Model
         public List<ServiceHistory> ServiceHistory { get; set; }
         public List<Image> ImageHistory { get; set; }
 
+        public Vehicle()
+        {
+
+        }
+
     }
 }
 
