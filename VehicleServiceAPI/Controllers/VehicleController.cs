@@ -7,6 +7,8 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Text;
 using VehicleServiceAPI.Model;
+using Microsoft.AspNetCore.Connections;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VehicleServiceAPI.Controllers;
 
@@ -41,6 +43,7 @@ public class VehicleController : ControllerBase
     }
 
     //List vehicles info
+    [Authorize]
     [HttpGet("getInfo")]
     public List<Vehicle> GetAllVehicles()
     {
@@ -72,6 +75,7 @@ public class VehicleController : ControllerBase
     }
 
     //Show vehicle info with image(s)
+    [Authorize]
     [HttpGet("{regNumber}", Name = "VehicleInfo")]
     public Vehicle GetVehicleInfo(string regNumber)
     {
@@ -81,6 +85,7 @@ public class VehicleController : ControllerBase
     }
 
     // Attach image to vehicle
+    [Authorize]
     [HttpPost("{regNumber}", Name = "PostImage"), DisableRequestSizeLimit]
     public IActionResult UploadImage(string regNumber)
     {
