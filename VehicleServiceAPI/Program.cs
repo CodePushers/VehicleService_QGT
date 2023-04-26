@@ -12,7 +12,7 @@ logger.Debug("init main");
 var builder = WebApplication.CreateBuilder(args);
 
 string mySecret = Environment.GetEnvironmentVariable("Secret") ?? "none";
-string myIssuer = Environment.GetEnvironmentVariable("myIssuer") ?? "none";
+string myIssuer = Environment.GetEnvironmentVariable("Issuer") ?? "none";
 
 logger.Info($"MySecret: {mySecret}, MyIssuer: {myIssuer}");
 
